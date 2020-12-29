@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <script src="file-upload.js"></script>
+
+</head>
+<body>
+<h2>File Upload</h2>
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <label>
+        Subject:
+        <input type="text" name="subject">
+    </label>
+    <br/>
+    <label>File:
+        <input multiple name="my-file" type="file"></label>
+    <br/>
+    <button type="submit">Submit Form Upload</button><br/>
+    <button type="button" onclick="upload()">Javascript Upload</button><br/>
+    <button type="button" onclick="uploadWithProgress()">Javascript Upload With Progress</button><br/>
+    <br/>
+    <br/>
+    <code id="output"></code>
+</form>
+
+
+</body>
+</html>
