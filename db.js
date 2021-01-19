@@ -1,14 +1,25 @@
 import MongoClient from "mongodb";
 
 export const writeFileUpload = async info => {
-  const client = await MongoClient.connect(process.env.MONGODB_URL);
+  console.time("write file into db");  
+  const client = await MongoClient.connect(process.env.MONGODB_URL);  
+  console.timeLog("write file into db");
+  
   const database = client.db("files");
   const uploadedFilesCollection = database.collection("uploadedFiles");
   await uploadedFilesCollection.insertOne(info);
+  
+  console.timeEnd("write file into db");
 };
 export const readUploadedFiles = async () => {
+  console.time("read data from db");
   const client = await MongoClient.connect(process.env.MONGODB_URL);
+  console.timeLog("read data from db");
+  
   const database = client.db("files");
   const uploadedFilesCollection = database.collection("uploadedFiles");
-  return await uploadedFilesCollection.find({}).toArray();
+  const result = await uploadedFilesCollection.find({}).toArray();
+  
+  console.timeEnd("read data from db");
+  return result; 
 };
