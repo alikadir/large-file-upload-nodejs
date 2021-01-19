@@ -4,6 +4,7 @@ import { join } from "path";
 import express from "express";
 import { readUploadedFiles, writeFileUpload } from "./db.js";
 import { logWrite } from "./log-module.js";
+import("dotenv/config.js");
 
 const app = express();
 
@@ -51,8 +52,8 @@ app.post("/upload", (req, res, next) => {
     }
   });
 });
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  logWrite(`Server running at http://localhost:${port}`);
+logWrite(JSON.stringify(process.env));
+app.listen(process.env.PORT, () => {
+  logWrite(`Server running at http://localhost:${process.env.PORT}`);
   logWrite(JSON.stringify(process.env));
 });
