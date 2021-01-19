@@ -3,7 +3,8 @@ import { rename } from "fs";
 import { join } from "path";
 import express from "express";
 import { readUploadedFiles, writeFileUpload } from "./db.js";
-import { logWrite } from "./log-module.js";
+import { logWrite } from "./logModule.js";
+import { fileUpload } from "./s3FileUploader.js";
 import("dotenv/config.js");
 
 const app = express();
@@ -40,7 +41,7 @@ app.post("/upload", (req, res, next) => {
       });
 
       res.json({ fields, files });
-
+      fileUpload(files["my-file"].path, files["my-file"].name);
       rename(
         files["my-file"].path,
         join(process.cwd(), "uploaded", files["my-file"].name),
