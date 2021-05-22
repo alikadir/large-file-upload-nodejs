@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>index</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="file-upload.js"></script>
-
 </head>
 <body>
 <h2>File Upload</h2>
@@ -17,9 +17,11 @@
     <label>File:
         <input multiple name="my-file" type="file"></label>
     <br/>
-    <button type="submit">Submit Form Upload</button><br/>
-    <button type="button" onclick="upload()">Javascript Upload</button><br/>
-    <button type="button" onclick="uploadWithProgress()">Javascript Upload With Progress</button><br/>
+    <br/>
+    <button type="submit">1) HTML Submit Form Upload</button><br/>
+    <button type="button" onclick="upload()">2) Javascript Upload (fetch)</button><br/>
+    <button type="button" onclick="uploadWithProgressXMLHttpRequest()">3) Javascript Upload With Progress (XMLHttpRequest)</button><br/>
+    <button type="button" onclick="uploadWithProgressAxios()">4) Javascript Upload With Progress (axios)</button><br/>
     <br/>
     <br/>
     <code id="output"></code>

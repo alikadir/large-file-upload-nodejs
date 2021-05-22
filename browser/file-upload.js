@@ -26,7 +26,7 @@ function upload() {
     });
 }
 
-function uploadWithProgress() {
+function uploadWithProgressXMLHttpRequest() {
   const elements = getElements();
 
   const file = elements.inputFile.files[0];
@@ -48,4 +48,28 @@ function uploadWithProgress() {
   });
 
   request.send(formData);
+}
+
+function uploadWithProgressAxios() {
+  const elements = getElements();
+
+  const file = elements.inputFile.files[0];
+  const subject = elements.inputSubject.value;
+
+  const formData = new FormData();
+  formData.append("my-file", file);
+  formData.append("subject", subject);
+
+  axios
+    .post("/upload", formData, {
+      onUploadProgress: e => {
+        elements.codeOutput.innerText = (e.loaded / e.total) * 100;
+      },
+    })
+    .then(data => {
+      elements.codeOutput.innerText = JSON.stringify(data);
+    })
+    .catch(err => {
+      elements.codeOutput.innerText = err;
+    });
 }

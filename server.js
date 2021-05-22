@@ -2,21 +2,18 @@ import formidable from "formidable";
 import { rename } from "fs";
 import { join } from "path";
 import express from "express";
-import { readUploadedFiles, writeFileUpload } from "./db.js";
-import { logWrite } from "./logModule.js";
-import { fileUpload } from "./s3FileUploader.js";
-import("dotenv/config.js");
+import { selectDbUploadedFiles, insertDbFileInfo } from "./lib/dbService.js";
+import { logWrite } from "./lib/logService.js";
+import { fileUpload } from "./lib/s3FileUploaderService.js";
+await import("dotenv-flow/config.js");
 
 const app = express();
 
-app.use(express.static("web"));
+app.use(express.static("browser"));
 
-app.get("/", (req, res) => {
-  res.end("Hello World");
-});
 
 app.get("/files", (req, res) => {
-  readUploadedFiles()
+  selectDbUploadedFiles()
     .then(data => {
       res.json(data);
     })
@@ -32,10 +29,10 @@ app.post("/upload", (req, res, next) => {
     maxFileSize: 10 * 1024 * 1024 * 1024, // 10GB
   });
 
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     if (err) next(err);
     else {
-      writeFileUpload({
+     await insertDbFileInfo({
         fields,
         files: { name: files["my-file"].name, path: files["my-file"].path },
       });
@@ -53,8 +50,9 @@ app.post("/upload", (req, res, next) => {
     }
   });
 });
-logWrite(JSON.stringify(process.env));
+
+
 app.listen(process.env.PORT, () => {
   logWrite(`Server running at http://localhost:${process.env.PORT}`);
-  logWrite(JSON.stringify(process.env));
+  logWrite(JSON.stringify(process.env,null,4));
 });
